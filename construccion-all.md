@@ -105,12 +105,12 @@ Criticar la implementación:
 ```typescript
   class ListForward<T> extends List<T> {
     //...
-    public traverse(): void { recorrer hacia alante};
+    public traverse(): void { //recorrer hacia alante };
   }
 
   class ListBackward<T> extends List<T> {
     //...
-    public traverse(): void { recorrer hacia atras}; 
+    public traverse(): void { //recorrer hacia atras }; 
   }
 ```
 
@@ -128,22 +128,22 @@ Criticar la implementación:
 
 Ampliamos la interfaz...
 
-```java
+```typescript
   public interface List<T> {
-    public void addFirst(T value);
-    public void removeFirst();
-    public void addLast(T value);
-    public void removeLast();
-    public T first();
-    public T last();
-    public boolean isEmpty();
-    public int length();
-    public List<T> clone();
-    public boolean isEqualTo(List<T>);
-    public void traverseForward();
-    public void traverseBackWard();
-    public void traverseEvens(); //pares
-    public void traverseOdds();  //impares
+    public addFirst(value: T): void;
+    public removeFirst(): void;
+    public addLast(value: T): void;
+    public removeLast(): void;
+    public first(): T;
+    public last(): T;
+    public isEmpty(): boolean;
+    public length(): number;
+    public clone(): List<T>;
+    public isEqualTo(arg: List<T>): boolean;
+    public traverseForward(): void;
+    public traverseBackward(): void;
+    public traverseEvens(): void;
+    public traverseOdds(): void;
     // etc...
   }
 ```
@@ -162,25 +162,25 @@ Ampliamos la interfaz...
 
 __Delegar__ hacia otra clase
 
-```java
+```typescript
   public interface List<T> {
-    void addFirst(T value);
-    void removeFirst();
-    void addLast(T value);
-    void removeLast();
-    T first();
-    T last();
-    boolean isEmpty();
-    int length();
-    List<T> clone();
-    boolean isEqualTo(List<T>);
-    Iterator<T> iterator();
+    addFirst(value: T): void;
+    removeFirst(): void;
+    addLast(value: T): void;
+    removeLast(): void;
+    first(): T;
+    last(): T;
+    isEmpty(): boolean;
+    length(): number;
+    clone(): List<T>;
+    isEqualTo(arg: List<T>): boolean;
+    iterator(): Iterator<T>;
   }
 
-  public interface Iterator<E> {
-    boolean hasNext();
-    E next();
-    void remove();
+  public interface Iterator<T> {
+    hasNext(): boolean;
+    next(): T;
+    remove(): void;
   }
 ```
 
