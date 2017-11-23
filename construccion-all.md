@@ -105,12 +105,12 @@ Criticar la implementación:
 ```typescript
   class ListForward<T> extends List<T> {
     //...
-    public traverse(): void { //recorrer hacia alante };
+    public traverse(): void { //recorrer hacia adelante };
   }
 
   class ListBackward<T> extends List<T> {
     //...
-    public traverse(): void { //recorrer hacia atras }; 
+    public traverse(): void { //recorrer hacia atrás }; 
   }
 ```
 
@@ -242,44 +242,47 @@ Hay diversas técnicas para ocultar la implementación...
 
 ### Ejemplo: Aventura v0.1
 
-```java
-   public class PersonajeDeAccion {
-     public void luchar() {}
-   }
+```typescript
+  class PersonajeDeAccion {
+      public luchar(): void {}
+      constructor() {}
+  }
 
-   public class Heroe extends PersonajeDeAccion {
-     public void luchar() {}
-     public void volar() {}
-   }
+  class Heroe extends PersonajeDeAccion {
+      public luchar(): void {}
+      public volar(): void {}
+  }
 
-   public class Creador {
-     PersonajeDeAccion[] personajes() {
-       PersonajeDeAccion[] x = {
-         new PersonajeDeAccion(),
-         new PersonajeDeAccion(),
-         new Heroe(),
-         new PersonajeDeAccion()
-       };
-       return x;
-     }
-   }
+  class Creador {
+      personajes(): PersonajeDeAccion[] {
+          let x: PersonajeDeAccion[] = [
+              new PersonajeDeAccion(),
+              new PersonajeDeAccion(),
+              new Heroe(),
+              new PersonajeDeAccion()
+          ];
+      
+          return x;
+      }
+  }
 
-   public class Aventura {
-     public static void main(String[] args) {
-       PersonajeDeAccion[] cuatroFantasticos = new Creador().personajes();
-       cuatroFantasticos[1].luchar();
-       cuatroFantasticos[2].luchar(); // Upcast
+  class Aventura {
+      main(): void {
+          let cuatroFantasticos: PersonajeDeAccion[] =  new Creador().personajes();
+          cuatroFantasticos[1].luchar();
+          cuatroFantasticos[2].luchar(); //Upcast
 
-       // En tiempo de compilacion: metodo no encontrado:
-       //! cuatroFantasticos[2].volar();
-       ((Heroe)cuatroFantasticos[2]).volar(); // Downcast
-       ((Heroe)cuatroFantasticos[1]).volar(); // ClassCastException
-       for (PersonajeDeAccion p: cuatroFantasticos)
-           p.luchar; // Sin problema
-       for (PersonajeDeAccion p: cuatroFantasticos)
-           p.volar; // El 0, 1 y 3 van a lanzar ClassCastException
-     }
-   }
+          // En tiempo de compilacion: metodo no encontrado:
+          //! cuatroFantasticos[2].volar()
+          (cuatroFantasticos[2] as Heroe).volar(); //Downcast
+          (cuatroFantasticos[1] as Heroe).volar(); //ClassCastException TypeError: cuatroFantasticos[1].volar is not a function. No se puede hacer el cast.
+
+          for (let p of cuatroFantasticos)
+              cuatroFantasticos.luchar(); //Sin problema
+          for (let p of cuatroFantasticos)
+              p.volar; // El 0, 1 y 3 van a lanzar ClassCastException
+      }
+  }
 ```
 
 #### Críticas a Aventura v0.1
@@ -287,46 +290,50 @@ Hay diversas técnicas para ocultar la implementación...
 - ¿De qué tipos van a ser los personales de acción? $\Rightarrow$ problema de _downcasting_
 - Hay que rediseñar la solución por ser insegura
 
-```java
-   interface SabeLuchar {
-     void luchar();
-   }
-   interface SabeNadar {
-     void nadar();
-   }
-   interface SabeVolar {
-     void volar();
-   }
-   class PersonajeDeAccion {
-     public void luchar() {}
-   }
-   class Heroe
-       extends PersonajeDeAccion
-       implements SabeLuchar,
-                  SabeNadar,
-                  SabeVolar {
-     public void nadar() {}
-     public void volar() {}
-   }
+```typescript
+  interface SabeLuchar {
+      luchar(): void;
+  }
 
-   public class Aventura {
-     static void t(SabeLuchar x)
-        { x.luchar(); }
-     static void u(SabeNadar x)
-        { x.nadar(); }
-     static void v(SabeVolar x)
-        { x.volar(); }
-     static void w(PersonajeDeAccion x)
-        { x.luchar(); }
-     public static void main(String[] args)
-     {
-       Heroe i = new Heroe();
-       t(i); // Tratar como un SabeLuchar
-       u(i); // Tratar como un SabeNadar
-       v(i); // Tratar como un SabeVolar
-       w(i); // Tratar como un PersonajeDeAccion
-     }
-   }
+  interface SabeNadar {
+      nadar(): void;
+  }
+
+  interface SabeVolar {
+      volar(): void;
+  }
+
+  class PersonajeDeAccion {
+      public luchar(): void {}
+  }
+
+  class Heroe    
+          extends PersonajeDeAccion 
+          implements SabeLuchar,
+                    SabeNadar,
+                    SabeVolar {
+      public nadar(): void {}
+      public volar(): void{}
+  }
+
+  class Aventura {
+      static t(x: SabeLuchar): void
+          { x.luchar(); }
+      static u(x: SabeNadar): void
+          { x.nadar(); }
+      static v(x: SabeVolar): void
+          { x.volar(); }
+      static w(x: PersonajeDeAccion)
+          { x.luchar(); }
+      
+      main(): void {
+          let i: Heroe = new Heroe();
+          Aventura.t(i); // Tratar como un SabeLuchar
+          Aventura.u(i); // Tratar como un SabeNadar
+          Aventura.v(i); // Tratar como un SabeVolar
+          Aventura.w(i); // Tratar como un PersonajeDeAccion
+      }
+  }
 ```
 
 ## <span style="color:blue">Polimorfismo</span>
