@@ -63,20 +63,21 @@ __Abstracción__: La clase abstracta `List<T>`diferencia entre el *qué* y el *c
 
 Criticar la implementación siguiente:
 
-```java
-  public abstract class List<T> {
-    public void addFirst(T value) { ... };
-    public void removeFirst() { ... };
-    public void addLast(T value) { ... };
-    public void removeLast() { ... };
-    public T first() { ... };
-    public T last() { ... };
-    public boolean isEmpty() { ... };
-    public int length() { ... };
-    public List<T> clone() { ... };
-    public boolean isEqualTo(List<T>) { ... };
-    public abstract void traverse();
-    // etc...
+```typescript
+  abstract class List<T> {
+
+    public addFrist(value: T): void { ... };
+    public removeFrist(): void { ... } ;
+    public addLast(value: T): void { ... };
+    public removeLast(): void { ... };
+    public first(): T { ... };
+    public last(): T { ... };
+    public isEmpty(): boolean { ... };
+    public length(): number { ... };
+    public clone(): List<T> { ... };
+    public isEqualTo(arg: List<T>): boolean { ... };
+    public abstract traverse(): void { ... };
+    //etc
   }
 ```
 
@@ -101,14 +102,15 @@ Delegar funcionalidad hacia las subclases (vía __herencia__).
 
 Criticar la implementación:
 
-```java
+```typescript
   class ListForward<T> extends List<T> {
     //...
-    public void traverse() { // recorrer hacia adelante };
+    public traverse(): void { recorrer hacia alante};
   }
+
   class ListBackward<T> extends List<T> {
     //...
-    public void traverse() { // recorrer hacia atras};
+    public traverse(): void { recorrer hacia atras}; 
   }
 ```
 
